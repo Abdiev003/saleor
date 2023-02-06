@@ -31,7 +31,7 @@ from ..core.taxes import TaxError, zero_taxed_money
 from ..core.tracing import traced_atomic_transaction
 from ..core.transactions import transaction_with_commit_on_errors
 from ..core.utils.url import validate_storefront_url
-from ..discount import DiscountInfo, DiscountValueType, OrderDiscountType, VoucherType
+from ..discount import DiscountInfo, DiscountType, DiscountValueType, VoucherType
 from ..discount.models import NotApplicable
 from ..discount.utils import (
     add_voucher_usage_by_customer,
@@ -512,7 +512,7 @@ def _create_order(
     manager: "PluginsManager",
     site_settings: Optional["SiteSettings"] = None,
     metadata_list: Optional[List] = None,
-    private_metadata_list: Optional[List] = None
+    private_metadata_list: Optional[List] = None,
 ) -> Order:
     """Create an order from the checkout.
 
@@ -565,7 +565,7 @@ def _create_order(
             and not voucher.apply_once_per_order
         ):
             order.discounts.create(
-                type=OrderDiscountType.VOUCHER,
+                type=DiscountType.VOUCHER,
                 value_type=DiscountValueType.FIXED,
                 value=checkout.discount.amount,
                 name=checkout.discount_name,
@@ -999,7 +999,7 @@ def _handle_checkout_discount(
             and not voucher.apply_once_per_order
         ):
             order.discounts.create(
-                type=OrderDiscountType.VOUCHER,
+                type=DiscountType.VOUCHER,
                 value_type=DiscountValueType.FIXED,
                 value=checkout.discount.amount,
                 name=checkout.discount_name,
