@@ -10503,6 +10503,7 @@ type OrderDiscount implements Node {
 
 """An enumeration."""
 enum OrderDiscountType {
+  SALE
   VOUCHER
   MANUAL
 }
